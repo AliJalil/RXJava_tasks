@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 //        RXJavaTasks.task2().observeOn(AndroidSchedulers.mainThread()).subscribe(::updateText).addTo(compositeDisposable)
 //        RXJavaTasks.task3().observeOn(AndroidSchedulers.mainThread()).subscribe(::updateText).addTo(compositeDisposable)
 //        RXJavaTasks.task4().observeOn(AndroidSchedulers.mainThread()).subscribe(::updateText).addTo(compositeDisposable)
-//        RXJavaTasks.task5().observeOn(AndroidSchedulers.mainThread()).subscribe(::updateText).addTo(compositeDisposable)
+        RXJavaTasks.task5().observeOn(AndroidSchedulers.mainThread()).subscribe(::updateText).addTo(compositeDisposable)
 
     }
 

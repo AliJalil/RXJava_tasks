@@ -1,6 +1,7 @@
 package com.ibareq.rxjavatasks
 
 import io.reactivex.rxjava3.core.Observable
+import java.lang.IllegalArgumentException
 import java.util.concurrent.TimeUnit
 
 /**
@@ -17,7 +18,10 @@ object RXJavaTasks {
      * let it emit characters form A to Z each 1 second
      */
     fun task1(): Observable<String> {
-        return Observable.
+        return Observable.just("ABCDEFJHIJKLMNOPQRSTUVWXYZ".split(""))
+            .flatMap { string -> Observable.fromIterable(string) }
+            .zipWith(Observable.interval(0,1,TimeUnit.SECONDS), { letter:Any?, _:Long? -> letter as String })
+
     }
 
     /**
@@ -27,7 +31,7 @@ object RXJavaTasks {
     fun task2(): Observable<String> {
         val mList = listOf("A", "B", "C", "C", "D", "B", "E")
         return Observable.fromIterable(mList)
-            .zipWith(Observable.interval(300, TimeUnit.MILLISECONDS), {item, _ -> item})
+            .zipWith(Observable.interval(300, TimeUnit.MILLISECONDS), {item, _ -> item}).distinct()
     }
 
     /**
@@ -37,15 +41,15 @@ object RXJavaTasks {
     fun task3(): Observable<String> {
         val firstObservable = Observable.just("A", "B", "C", "D", "E")
         val secondObservable = Observable.range(1,5)
-        return firstObservable.mergeWith(secondObservable)
-            .zipWith(Observable.interval(300, TimeUnit.MILLISECONDS), {item, _ -> item})
+        return secondObservable.map {it.toString()}.mergeWith(firstObservable)
+            .zipWith(Observable.interval(300, TimeUnit.MILLISECONDS)) { item, _ -> item }
     }
 
     /**
      * add the required operators to emit data from 21 to 80 only
      */
     fun task4(): Observable<Int> {
-        return Observable.range(1,100)
+        return Observable.range(1,100).filter { t -> t in 21..80 }
             .zipWith(Observable.interval(300, TimeUnit.MILLISECONDS), {item, _ -> item})
     }
 
@@ -56,7 +60,7 @@ object RXJavaTasks {
         val firstObservable = Observable.just("A", "B", "C", "D", "E").zipWith(Observable.interval(300, TimeUnit.MILLISECONDS), {item, _ -> item})
         val secondObservable = Observable.range(1,5).zipWith(Observable.interval(300, TimeUnit.MILLISECONDS), {item, _ -> item})
 
-        return Observable.
+        return Observable.zip(firstObservable,secondObservable, { firstOItem, secondOItem -> firstOItem + secondOItem})
     }
 
 }
